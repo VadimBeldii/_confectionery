@@ -1,5 +1,5 @@
 ﻿using Confectionery.BLL.DTOs;
-
+using Confectionery.DAL.Entities;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -20,16 +20,16 @@ namespace SellerClient
             var result = apiClient.ProcessHttpGetRequest("getproducts");
             return JsonSerializer.Deserialize<ICollection<ProductDTO>>(result);
         }
-        public ICollection<OrderDTO> GetOrders()
+        public ICollection<Order> GetOrders()
         {
             var result = apiClient.ProcessHttpGetRequest("getorders");
-            return JsonSerializer.Deserialize<ICollection<OrderDTO>>(result);
+            return JsonSerializer.Deserialize<ICollection<Order>>(result);
         }
-        public void SendOrder(OrderDTO order)
+        public void SendOrder(Order order)
         {
             apiClient.ProcessHttpPostRequest("addorder", JsonSerializer.Serialize(order));
         }
-        public void MarkOrderAsExecuted(OrderDTO order)
+        public void MarkOrderAsExecuted(Order order)
         {
             apiClient.ProcessHttpPostRequest("executeorder", JsonSerializer.Serialize(order));
         }

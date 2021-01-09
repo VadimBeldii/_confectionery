@@ -39,8 +39,6 @@ namespace Confectionery.API
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile(new CategoryDTOMappingProfile());
                 cfg.AddProfile(new ProductDTOMappingProfile());
-                cfg.AddProfile(new OrderDTOMappingProfile());
-                cfg.AddProfile(new OrderItemDTOMappingProfile());
             });
 
             IMapper mapper = config.CreateMapper();

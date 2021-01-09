@@ -1,4 +1,5 @@
 ﻿using Confectionery.BLL.DTOs;
+using Confectionery.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace SellerClient
         private ICollection<CategoryDTO> categories;
         private CategoryDTO currentCategory;
         private ICollection<ProductDTO> products;
-        private OrderDTO newOrder = new OrderDTO { OrderItems = new List<OrderItemDTO>() };
+        private Order newOrder = new Order { OrderItems = new List<OrderItem>() };
 
-        private ICollection<OrderDTO> orders;
-        private OrderDTO currentOrder;
+        private ICollection<Order> orders;
+        private Order currentOrder;
 
         #region create order
         private void AddProductBtn_Click(object sender, EventArgs e)
@@ -35,9 +36,9 @@ namespace SellerClient
             if (uint.TryParse(CountTB.Text, out uint count)
                 && count <= currentCategory.Products[ProductsLV.SelectedIndices[0]].Count)
             {
-                if (item == default(OrderItemDTO))
+                if (item == default(OrderItem))
                 {
-                    newOrder.OrderItems.Add(new OrderItemDTO
+                    newOrder.OrderItems.Add(new OrderItem
                     {
                         Count = (int)count,
                         ProductId = currentCategory.Products[ProductsLV.SelectedIndices[0]].Id
@@ -68,9 +69,9 @@ namespace SellerClient
             }
             newOrder.Time = DateTime.Now;
             apiWrapper.SendOrder(newOrder);
-            newOrder = new OrderDTO
+            newOrder = new Order
             {
-                OrderItems = new List<OrderItemDTO>()
+                OrderItems = new List<OrderItem>()
             };
 
             currentCategory = null;

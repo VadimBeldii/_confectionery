@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Confectionery.BLL.Services;
 using System.Text.Json;
-
+using Confectionery.DAL.Entities;
 
 namespace Confectionery_API.Controllers
 {
@@ -38,13 +38,13 @@ namespace Confectionery_API.Controllers
         }
 
         [HttpPost("addorder")]
-        public IActionResult AddOrder([FromBody] OrderDTO order)
+        public IActionResult AddOrder([FromBody] Order order)
         {
             orderService.AddOrder(order);
             return Ok();
         }
         [HttpPost("executeorder")]
-        public IActionResult ExecuteOrder([FromBody] OrderDTO order)
+        public IActionResult ExecuteOrder([FromBody] Order order)
         {
             orderService.Execute(order);
             return Ok();

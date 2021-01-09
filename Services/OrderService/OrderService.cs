@@ -9,14 +9,12 @@ namespace Confectionery.BLL.Services
     public class OrderService : IOrderService
     {
         private readonly DAL.IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
         public OrderService(DAL.IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
         }
 
-        private void SaveStatistics(OrderDTO order)
+        private void SaveStatistics(Order order)
         {
             foreach (var item in order.OrderItems)
             {
@@ -30,7 +28,7 @@ namespace Confectionery.BLL.Services
                 }
             }
         }
-        public bool AddOrder(OrderDTO order)
+        public bool AddOrder(Order order)
         {
             //проверка на корректность
             foreach (var item in order.OrderItems)
@@ -48,20 +46,20 @@ namespace Confectionery.BLL.Services
                 var product = unitOfWork.Products.GetProduct(item.ProductId);
                 unitOfWork.Products.UpdateProduct(item.ProductId, new[] { KeyValuePair.Create<string, object>("Count", product.Count - item.Count) });
             }
-            unitOfWork.Orders.AddOrder(mapper.Map<Order>(order));
+            unitOfWork.Orders.AddOrder(order);
             unitOfWork.Save();
             return true;
         }
 
-        public void Execute(OrderDTO order)
+        public void Execute(Order order)
         {
-            unitOfWork.Orders.RemoveOrder(mapper.Map<Order>(order));
+            unitOfWork.Orders.RemoveOrder(order);
             unitOfWork.Save();
         }
 
-        public ICollection<OrderDTO> GetOrders()
+        public ICollection<Order> GetOrders()
         {
-            var result = mapper.Map<ICollection<OrderDTO>>(unitOfWork.Orders.GetOrders());
+            var result = unitOfWork.Orders.GetOrders();
             return result;
         }
     }
